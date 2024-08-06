@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="clientes" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c2419efd-6b35-43d6-94aa-0ecb7e44c053">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="116"/>
+	<property name="ireport.y" value="49"/>
+	<queryString>
+		<![CDATA[select * from tbclientes order by nomecli;]]>
+	</queryString>
+	<field name="idcli" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nomecli" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="endcli" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fonecli" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emailcli" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="58" splitType="Stretch">
+			<staticText>
+				<reportElement x="24" y="19" width="100" height="29" uuid="d79b2887-2792-4a1b-8667-b1c2fe4eb1d3"/>
+				<textElement>
+					<font size="22" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Clientes]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="289" y="19" width="238" height="39" uuid="c601597b-00a6-40bf-b305-f4bdfffc42e4"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement x="17" y="2" width="37" height="20" uuid="eb2c7763-f674-42fd-a438-6d0f80a6d8e9"/>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="54" y="0" width="113" height="20" uuid="bcf890c2-490f-4d7c-b645-fa49949124c3"/>
+				<text><![CDATA[Nome de Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="178" y="0" width="100" height="20" uuid="ee39b54d-2d12-4ba6-be27-225520b3f495"/>
+				<text><![CDATA[Endereço]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="324" y="2" width="100" height="20" uuid="3807eac8-99dd-4d25-9d05-f58504388c12"/>
+				<text><![CDATA[Telefone]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="433" y="2" width="100" height="20" uuid="c07f6dd6-7fdf-43ca-b290-9eaeab50251c"/>
+				<text><![CDATA[Email]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="17" y="0" width="37" height="20" uuid="784bcdb8-b29d-4331-986f-1c9c4b2f7dd2"/>
+				<textFieldExpression><![CDATA[$F{idcli}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="178" y="3" width="100" height="20" uuid="d74bb69f-c352-4642-b835-89a143561b53"/>
+				<textFieldExpression><![CDATA[$F{endcli}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="324" y="3" width="100" height="20" uuid="505a0edb-2199-4c41-9927-f7dbf327283f"/>
+				<textFieldExpression><![CDATA[$F{fonecli}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="433" y="8" width="100" height="20" uuid="25899b9d-494a-44d3-a9a1-bd0b4c614494"/>
+				<textFieldExpression><![CDATA[$F{emailcli}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="54" y="3" width="113" height="20" uuid="2a5426d9-9904-42ed-9713-0850834e60d7"/>
+				<textFieldExpression><![CDATA[$F{nomecli}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="433" y="34" width="80" height="20" uuid="fc26dcb4-2420-40d0-b76f-0435dce6ce72"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="513" y="34" width="40" height="20" uuid="b8c00df9-cc10-4d39-8aa7-b6a862124cc3"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

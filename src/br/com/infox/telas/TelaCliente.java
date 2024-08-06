@@ -1,0 +1,402 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package br.com.infox.telas;
+
+import java.sql.*;
+import br.com.infox.dal.ModuloConexao;
+import javax.swing.JOptionPane;
+import net.proteanit.sql.DbUtils;
+
+/**
+ *
+ * @author carlos
+ */
+public class TelaCliente extends javax.swing.JInternalFrame {
+
+    private static Connection conexao = null;
+    private static PreparedStatement pst = null;
+    private static ResultSet rs = null;
+
+    /**
+     * Creates new form TelaCliente
+     */
+    public TelaCliente() {
+        initComponents();
+        conexao = ModuloConexao.conector();
+        //txtPesquisa.setText(null);
+    }
+
+    private void limpar() {
+        txtID.setText(null);
+        txtNome.setText(null);
+        txtEndereco.setText(null);
+        txtTelefone.setText(null);
+        txtEmail.setText(null);
+    }
+
+    private void adicionar() {
+        String sql = "insert into tbclientes(nomecli,endcli,fonecli,emailcli) "
+                + "values (?,?,?,?)";
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, txtNome.getText());
+            pst.setString(2, txtEndereco.getText());
+            pst.setString(3, txtTelefone.getText());
+            pst.setString(4, txtEmail.getText());
+            if (txtNome.getText().isEmpty() || txtTelefone.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Preencha os campos "
+                        + "obrigatorio!!!");
+            } else {
+                int adiciona = pst.executeUpdate();
+                if (adiciona > 0) {
+                    JOptionPane.showMessageDialog(null, "Cliente adicionado com "
+                            + "sucesso!!!");
+                    limpar();
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
+    private void editar() {
+        String sql = "update tbclientes set nomecli =?, endcli =? ,fonecli = ?,"
+                + "emailcli=? where idcli=?";
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, txtNome.getText());
+            pst.setString(2, txtEndereco.getText());
+            pst.setString(3, txtTelefone.getText());
+            pst.setString(4, txtEmail.getText());
+            pst.setString(5, txtID.getText());
+            if (txtNome.getText().isEmpty() || txtTelefone.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Preencha os campos Obrigatorio!!!");
+            } else {
+                int edita = pst.executeUpdate();
+                if (edita > 0) {
+                    JOptionPane.showMessageDialog(null, "Cliente editado com sucesso!!!");
+                    limpar();
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
+    private void deletar() {
+        int deleta = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja"
+                + " deleta o usuario?", "Atenção",
+                JOptionPane.YES_NO_OPTION);
+        try {
+            if (deleta == JOptionPane.YES_OPTION) {
+                String sql = "delete from tbclientes where idcli =?";
+                pst = conexao.prepareStatement(sql);
+                pst.setString(1, txtID.getText());
+                int apagado = pst.executeUpdate();
+                if (apagado > 0) {
+                    JOptionPane.showMessageDialog(null, "cliente deletado com sucesso!!!");
+                    limpar();
+                }
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
+    private void pesquisar() {
+        String sql = "select * from tbclientes where nomecli like ?";
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, txtPesquisa.getText() + "%");
+            rs = pst.executeQuery();
+            tblCliente.setModel(DbUtils.resultSetToTableModel(rs));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
+    public void setar_Campos() {
+        int setar = tblCliente.getSelectedRow();
+        txtID.setText(tblCliente.getModel().getValueAt(setar, 0).toString());
+        txtNome.setText(tblCliente.getModel().getValueAt(setar, 1).toString());
+        txtEndereco.setText(tblCliente.getModel().getValueAt(setar, 2).toString());
+        txtTelefone.setText(tblCliente.getModel().getValueAt(setar, 3).toString());
+        txtEmail.setText(tblCliente.getModel().getValueAt(setar, 4).toString());
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        lblID = new javax.swing.JLabel();
+        lblEndereco = new javax.swing.JLabel();
+        lblTelefone = new javax.swing.JLabel();
+        lblEmail = new javax.swing.JLabel();
+        btnADD = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        txtID = new javax.swing.JTextField();
+        txtEndereco = new javax.swing.JTextField();
+        txtTelefone = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
+        lblPesquisa = new javax.swing.JLabel();
+        txtPesquisa = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblCliente = new javax.swing.JTable();
+        lblNome = new javax.swing.JLabel();
+        txtNome = new javax.swing.JTextField();
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        setForeground(java.awt.Color.blue);
+        setTitle("Cliente");
+        setMaximumSize(new java.awt.Dimension(530, 530));
+        setMinimumSize(new java.awt.Dimension(530, 530));
+        setPreferredSize(new java.awt.Dimension(530, 530));
+
+        lblID.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblID.setText("*ID:");
+
+        lblEndereco.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblEndereco.setText("*Endereço:");
+
+        lblTelefone.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblTelefone.setText("*Telefone:");
+
+        lblEmail.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblEmail.setText("*Email:");
+
+        btnADD.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infox/icones/ADD.png"))); // NOI18N
+        btnADD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnADDActionPerformed(evt);
+            }
+        });
+
+        btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infox/icones/EDIT.png"))); // NOI18N
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
+
+        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infox/icones/DELETE.png"))); // NOI18N
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
+        txtID.setEditable(false);
+        txtID.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        txtEndereco.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        txtTelefone.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        txtEmail.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEmailActionPerformed(evt);
+            }
+        });
+
+        lblPesquisa.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblPesquisa.setText("Pesquisa:");
+
+        txtPesquisa.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtPesquisa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPesquisaActionPerformed(evt);
+            }
+        });
+        txtPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPesquisaKeyReleased(evt);
+            }
+        });
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infox/icones/Seach1.png"))); // NOI18N
+
+        tblCliente.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ID", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tblCliente.getTableHeader().setReorderingAllowed(false);
+        tblCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblClienteMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tblCliente);
+
+        lblNome.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblNome.setText("*Nome:");
+
+        txtNome.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(lblID)
+                                    .addComponent(lblEndereco)
+                                    .addComponent(lblTelefone)
+                                    .addComponent(lblEmail)
+                                    .addComponent(lblPesquisa)
+                                    .addComponent(lblNome))
+                                .addGap(27, 27, 27)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtEndereco)
+                                    .addComponent(txtEmail)
+                                    .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtNome)
+                                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnADD)
+                                .addGap(40, 40, 40)
+                                .addComponent(btnEdit)
+                                .addGap(40, 40, 40)
+                                .addComponent(btnDelete)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel1)))
+                .addContainerGap(36, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPesquisa)
+                    .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblID)
+                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNome)
+                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTelefone))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblEmail)))
+                    .addComponent(lblEndereco))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnADD, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnEdit)
+                        .addComponent(btnDelete)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        setBounds(0, 0, 530, 530);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEmailActionPerformed
+
+    private void btnADDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnADDActionPerformed
+        // Chama o metodo adicionar
+        adicionar();
+    }//GEN-LAST:event_btnADDActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // Chama o metodo editar
+        editar();
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // chamar o metodo deletar
+        deletar();
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void txtPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPesquisaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPesquisaActionPerformed
+
+    private void txtPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaKeyReleased
+        // TODO add your handling code here:
+        pesquisar();
+    }//GEN-LAST:event_txtPesquisaKeyReleased
+
+    private void tblClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClienteMouseClicked
+        // Chamar o metodo setar_Campos
+        setar_Campos();
+    }//GEN-LAST:event_tblClienteMouseClicked
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnADD;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblEmail;
+    private javax.swing.JLabel lblEndereco;
+    private javax.swing.JLabel lblID;
+    private javax.swing.JLabel lblNome;
+    private javax.swing.JLabel lblPesquisa;
+    private javax.swing.JLabel lblTelefone;
+    private javax.swing.JTable tblCliente;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtEndereco;
+    private javax.swing.JTextField txtID;
+    private javax.swing.JTextField txtNome;
+    private javax.swing.JTextField txtPesquisa;
+    private javax.swing.JTextField txtTelefone;
+    // End of variables declaration//GEN-END:variables
+}
